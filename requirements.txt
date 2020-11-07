@@ -1,0 +1,12 @@
+FastAPI~=0.61.1
+SQLAlchemy~=1.3.20
+pydantic~=1.7.1
+gunicorn
+uvicorn
+uvloop
+pymysql
+httptools
+PyYAML~=5.3.1
+requests~=2.24.0
+starlette==0.13.6
+pyjwt
