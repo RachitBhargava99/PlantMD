@@ -50,7 +50,12 @@ class Symptom(SymptomBase):
 
 
 class SymptomList(BaseModel):
-    diseases: List[Symptom]
+    symptoms: List[Symptom]
+
+
+class SymptomListWithFruit(BaseModel):
+    fruit: str
+    symptoms: List[int]
 
 
 # ===================================
