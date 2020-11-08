@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, HttpUrl
 
 from datetime import datetime
 from typing import List, Optional
@@ -11,6 +11,9 @@ class DiseaseBase(BaseModel):
     name: str
     scientific_name: str
     fruit: str
+    natural_solution: str
+    chemical_solution: str
+    external_link: HttpUrl
 
 
 class DiseaseCreate(DiseaseBase):

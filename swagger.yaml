@@ -12,57 +12,65 @@ servers:
 - url: https://crincs-dot-thinger.ue.r.appspot.com
   description: Google Cloud temporary URL
 tags:
-- name: group
-  description: Endpoints related to group management
+- name: disease
+  description: Endpoints related to disease management
+- name: symptom
+  description: Endpoints related to symptom management
 paths:
-  /group:
+  /disease:
     put:
       tags:
-        - group
-      summary: Creates a group for the user
-      operationId: create_group
-      description: The user must be registered and logged in to use this endpoint.
+        - disease
+      summary: Creates a disease
+      operationId: create_plant_disease
+      description: No restrictions.
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Group'
+              $ref: '#/components/schemas/Disease'
         required: true
       responses:
         200:
-          description: Group created successfully
+          description: Disease created successfully
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/Group'
-                  - $ref: '#/components/schemas/GroupHiddenDetails'
-        401:
-          description: User unauthorized / Bearer token expired
-          content: {}
+                  - $ref: '#/components/schemas/DiseaseHiddenDetails'
+                  - $ref: '#/components/schemas/Disease'
         422:
           description: Group name already exists
           content: {}
-    get:
+  /disease/{disease_id}:
+    put:
       tags:
-        - group
-      summary: Gets a list of diseases the user is a part / owner of
-      operationId: get_all_groups
-      description: The user must be registered and logged in to use this endpoint.
+        - disease
+      summary: Gets information about the requested disease
+      operationId: get_disease_info
+      description: No restrictions.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Disease'
+        required: true
       responses:
         200:
-          description: List of diseases the user is a part / owner of
+          description: Disease created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GroupArray'
-        401:
-          description: User unauthorized / Bearer token expired
+                allOf:
+                  - $ref: '#/components/schemas/DiseaseHiddenDetails'
+                  - $ref: '#/components/schemas/Disease'
+        422:
+          description: Group name already exists
           content: {}
 
 components:
   schemas:
-    GroupID:
+    DiseaseID:
       type: object
       required:
         - id
@@ -71,30 +79,39 @@ components:
           type: integer
           description: Internal ID of the group, as seen in the database
           format: int64
-    Group:
+    Disease:
       type: object
       required:
         - name
+      properties:
+        name:
+          type: string
+          description: Name of the disease
+          minLength: 3
+          maxLength: 128
+        scientific_name:
+          type: string
+          description: Scientific name of the causal agent
+        fruit:
+          type: string
+          description: Name of the fruit in which the disease is known to occur
+        natural_solution:
+          type: string
+          description: Natural solution to get rid of the disease / natural preventive measures
+        chemical_solution:
+          type: string
+          description: Chemical solution to get rid of the disease / chemical preventive measures
+        external_link:
+          type: string
+          format: uri
+          description: Link to buy the chemical solution
+    DiseaseHiddenDetails:
+      type: object
       properties:
         id:
           type: integer
           description: Internal ID of the group, as seen in the database
           format: int64
-        name:
-          type: string
-          description: Short description of the group
-          minLength: 3
-          maxLength: 128
-    GroupHiddenDetails:
-      type: object
-      properties:
-        creation_time:
-          type: string
-          description: DateTime of the group's creation time
-          format: date-time
-        is_active:
-          type: boolean
-          description: Flag denoting whether or not is a group active
     GroupArray:
       type: object
       required:
