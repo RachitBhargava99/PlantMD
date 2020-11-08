@@ -16,7 +16,9 @@ def _create_fruit_if_not_exists(db: Session, fruit_name: str) -> None:
 
 def create_disease(db: Session, disease: schemas.DiseaseCreate) -> schemas.Disease:
     _create_fruit_if_not_exists(db, disease.fruit)
-    db_disease = models.Disease(name=disease.name, scientific_name=disease.scientific_name, fruit=disease.fruit)
+    db_disease = models.Disease(name=disease.name, scientific_name=disease.scientific_name, fruit=disease.fruit,
+                                natural_solution=disease.natural_solution, chemical_solution=disease.chemical_solution,
+                                external_link=disease.external_link)
     db.add(db_disease)
     db.commit()
     db.refresh(db_disease)

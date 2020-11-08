@@ -16,6 +16,9 @@ class Disease(Base):
     name = Column(String(63))
     scientific_name = Column(String(127))
     fruit = Column(String(63), ForeignKey('fruits.name'))
+    natural_solution = Column(String(4097))
+    chemical_solution = Column(String(4097))
+    external_link = Column(String(1023))
 
 
 class Symptom(Base):

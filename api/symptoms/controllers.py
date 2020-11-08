@@ -29,7 +29,8 @@ def get_all_diseases_by_fruit(db: Session, fruit_name: str) -> List[schemas.Dise
 def get_diseases_from_symptoms(db: Session, symptom_list: schemas.SymptomListWithFruit) -> List[schemas.Disease]:
     disease_list = get_all_diseases_by_fruit(db, symptom_list.fruit)
     for curr_symptom_id in symptom_list.symptoms:
+        print(symptom_list.symptoms)
         curr_rel_links = db.query(models.SymptomDiseaseLink).filter_by(symptom_id=curr_symptom_id)
-        curr_rel_ids = [x.id for x in curr_rel_links]
+        curr_rel_ids = [x.symptom_id for x in curr_rel_links]
         disease_list = [x for x in disease_list if x.id in curr_rel_ids]
     return disease_list

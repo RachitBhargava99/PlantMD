@@ -9,10 +9,8 @@ from api.api import api_router
 
 models.Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="FastMD", docs_url='/')
-app.openapi_schema = yaml.load(open('swagger.yaml').read())
-app.include_router(api_router)
-
+app = FastAPI(title="PlantMD", docs_url='/')
+# app.openapi_schema = yaml.load(open('swagger.yaml').read())
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -20,3 +18,5 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(api_router)
