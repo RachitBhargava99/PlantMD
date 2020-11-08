@@ -45,3 +45,15 @@ def create_symptom_disease_link(db: Session, sd_link: schemas.SymptomDiseaseLink
     db.commit()
     db.refresh(db_link)
     return db_link
+
+#soph experimenting space :)
+def get_disease_by_fruit(db: Session, fruit_name: str):
+    db_link = db.query(models.Disease).filter_by(fruit = fruit_name)
+    return [x for x in db_link]
+
+def get_symptoms_by_disease(db: Session, disease_id: int):
+    db_link = db.query(models.SymptomDiseaseLink).filter_by(disease_id=disease_id)
+    symptoms = []
+    for link in db_link:
+        symptoms.append(db.query(models.Symptom).filter_by(id=link.symptom_id).first())
+    return symptoms

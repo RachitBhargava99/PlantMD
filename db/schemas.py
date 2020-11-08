@@ -81,3 +81,6 @@ class SymptomDiseaseLink(SymptomDiseaseLinkBase):
 # ===================================
 class ImageInput(BaseModel):
     b64_img: str
+
+class FruitInput(BaseModel):
+    name: str

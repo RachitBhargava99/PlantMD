@@ -7,7 +7,7 @@ import base64
 
 from db import schemas
 from db.db import get_db
-from .controllers import create_disease, create_symptom, create_symptom_disease_link, get_disease_by_id
+from .controllers import create_disease, create_symptom, create_symptom_disease_link, get_disease_by_id, get_disease_by_fruit, get_symptoms_by_disease
 from .utils import predict_disease_image
 
 router = APIRouter()
@@ -37,3 +37,14 @@ def link_symptom_with_disease(sd_link: schemas.SymptomDiseaseLinkCreate, db: Ses
 def predict_disease_from_image(image: schemas.ImageInput):
     pil_img = Image.open(BytesIO(base64.b64decode(image.b64_img)))
     return {'prediction': predict_disease_image(pil_img)}
+
+#soph experimenting space :)
+
+@router.get('/symptom')
+def get_symptoms_from_fruit(fruit: schemas.FruitInput, db: Session = Depends(get_db)):
+    dList = get_disease_by_fruit(db, fruit.name)
+    sList = []
+    for disease in dList:
+        sList.extend(get_symptoms_by_disease(db, disease.id))
+    sList = list(set(sList))
+    return {'symptoms': sList}
