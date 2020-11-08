@@ -22,7 +22,7 @@ class DiseaseCreate(DiseaseBase):
 
 
 class Disease(DiseaseBase):
-    id: int
+    id: str
 
     class Config:
         orm_mode = True
@@ -46,7 +46,7 @@ class SymptomCreate(SymptomBase):
 
 
 class Symptom(SymptomBase):
-    id: int
+    id: str
 
     class Config:
         orm_mode = True
@@ -80,10 +80,23 @@ class SymptomDiseaseLink(SymptomDiseaseLinkBase):
 
 
 # ===================================
+# Fruit Models start here
+# ===================================
+class FruitBase(BaseModel):
+    name: str
+
+
+class Fruit(FruitBase):
+    class Config:
+        orm_mode = True
+
+
+class FruitList(BaseModel):
+    fruits: List[Fruit]
+
+
+# ===================================
 # Custom Input Models start here
 # ===================================
 class ImageInput(BaseModel):
     b64_img: str
-
-class FruitInput(BaseModel):
-    name: str

@@ -7,8 +7,8 @@ import base64
 
 from db import schemas
 from db.db import get_db
-from .controllers import create_disease, create_symptom, create_symptom_disease_link, get_disease_by_id, get_disease_by_fruit, get_symptoms_by_disease
-from .utils import predict_disease_image
+from .controllers import create_disease, create_symptom, create_symptom_disease_link, get_disease_by_id
+from .utils import predict_disease_image, db_populate
 
 router = APIRouter()
 
@@ -24,17 +24,11 @@ def get_disease_info(disease_id: int, db: Session = Depends(get_db)):
 
 
 @router.post('/image', tags=['disease'])
-def predict_disease_from_image(image: schemas.ImageInput):
+def predict_disease_from_image(image: schemas.ImageInput, db: Session = Depends(get_db)):
     pil_img = Image.open(BytesIO(base64.b64decode(image.b64_img)))
-    return {'prediction': predict_disease_image(pil_img)}
+    return {'prediction': predict_disease_image(db, pil_img)}
 
-#soph experimenting space :)
 
-@router.get('/symptom')
-def get_symptoms_from_fruit(fruit: schemas.FruitInput, db: Session = Depends(get_db)):
-    dList = get_disease_by_fruit(db, fruit.name)
-    sList = []
-    for disease in dList:
-        sList.extend(get_symptoms_by_disease(db, disease.id))
-    sList = list(set(sList))
-    return {'symptoms': sList}
+@router.post('/auto', tags=['disease'])
+def auto_populate_db(db: Session = Depends(get_db)):
+    return db_populate(db, 'data/plantdb.csv')
